@@ -52,7 +52,7 @@ class DraftListView(LoginRequiredMixin,ListView):
 @login_required
 def post_publish(request,pk):
     post = get_object_or_404(Post,pk=pk)
-    post.publish
+    post.publish()
     return redirect('post_detail',pk=pk)
 
 @login_required
@@ -67,12 +67,12 @@ def add_comment_to_post(request,pk):
             comment.save()
             return redirect('post_detail',pk=post.pk)
  
-        else:
-            form = CommentForm()
-        return render(request,'blog/comment_form.html',{'form':form})
+    else:
+        form = CommentForm() 
+    return render(request,'blog/comment_form.html',{'form':form})
 
 @login_required
-def comment_approve(request,pk):
+def comment_approve(request ,pk):
     comment = get_object_or_404(Comment,pk=pk)
     comment.approve()
     return redirect('post_detail',pk=comment.post.pk)
